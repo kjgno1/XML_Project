@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<cource>
+	<student sid="s01">
+		<name>Lê Thị Hoa</name>
+		<age>20</age>
+		<addr>TB</addr>
+	</student>
+	<student sid="s02">
+		<name>Phạm Văn Tuấn</name>
+		<age>20</age>
+		<addr>TB</addr>
+	</student>
+	<student sid="s01">
+		<name>Lê Thị My</name>
+		<age>20</age>
+		<addr>TB</addr>
+	</student>
+</cource>
