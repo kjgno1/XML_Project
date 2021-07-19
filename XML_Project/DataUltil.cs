@@ -28,6 +28,95 @@ namespace XML_Project
             xmlElement = xmlDocument.DocumentElement;
         }
 
+        public void Add(Student s)
+        {
+            XmlElement student = xmlDocument.CreateElement("student");
+            student.SetAttribute("sid", s.sid);
+            XmlElement name = xmlDocument.CreateElement("name");
+            name.InnerText = s.name;
+            XmlElement age = xmlDocument.CreateElement("age");
+            age.InnerText = s.age;
+            XmlElement addr = xmlDocument.CreateElement("addr");
+            addr.InnerText = s.addr;
+
+            student.AppendChild(name);
+            student.AppendChild(age);
+            student.AppendChild(addr);
+            xmlElement.AppendChild(student);
+            xmlDocument.Save(fileName);
+
+        }
+
+        public bool Update(Student s)
+        {
+            XmlNode node = xmlElement.SelectSingleNode("student[@sid='" + s.sid + "']");
+            if (node != null)
+            {
+                XmlElement student = xmlDocument.CreateElement("student");
+                student.SetAttribute("sid", s.sid);
+                XmlElement name = xmlDocument.CreateElement("name");
+                name.InnerText = s.name;
+                XmlElement age = xmlDocument.CreateElement("age");
+                age.InnerText = s.age;
+                XmlElement addr = xmlDocument.CreateElement("addr");
+                addr.InnerText = s.addr;
+
+                student.AppendChild(name);
+                student.AppendChild(age);
+                student.AppendChild(addr);
+                xmlElement.ReplaceChild(student, node);
+                xmlDocument.Save(fileName);
+                return true;
+            }
+            return false;
+        }
+
+        public bool Delete(string sid)
+        {
+            XmlNode node = xmlElement.SelectSingleNode("student[@sid='" + sid + "']");
+            if (node != null)
+            {
+                xmlElement.RemoveChild(node);
+                xmlDocument.Save(fileName);
+                return true;
+            }
+            return false;
+        }
+
+        public List<Student> FindById(string id)
+        {
+            XmlNode node = xmlElement.SelectSingleNode("student[@sid='" + id + "']");
+            List<Student> students = new List<Student>();
+            if (node != null)
+            {
+                Student student = new Student();
+                student.sid = node.Attributes[0].InnerText;
+                student.name = node.SelectSingleNode("name").InnerText;
+                student.age = node.SelectSingleNode("age").InnerText;
+                student.addr = node.SelectSingleNode("addr").InnerText;
+                students.Add(student);
+            }
+            return students;
+        }
+        public List<Student> FindByCity(string addr)
+        {
+            XmlNodeList nodes = xmlElement.SelectNodes("student[addr='" + addr + "']");
+            List<Student> students = new List<Student>();
+            foreach (XmlNode node in nodes)
+            {
+                if (node != null) { 
+                Student student = new Student();
+                student.sid = node.Attributes[0].InnerText;
+                student.name = node.SelectSingleNode("name").InnerText;
+                student.age = node.SelectSingleNode("age").InnerText;
+                student.addr = node.SelectSingleNode("addr").InnerText;
+                students.Add(student);
+                }
+            }
+            return students;
+        }
+
+
         public List<Student> getAllStudent()
         {
             XmlNodeList xmlNodeList = xmlElement.SelectNodes("student");
@@ -41,6 +130,7 @@ namespace XML_Project
                 student.age = item.SelectSingleNode("age").InnerText;
                 student.addr = item.SelectSingleNode("addr").InnerText;
                 students.Add(student);
+                
 
             }
             return students;
